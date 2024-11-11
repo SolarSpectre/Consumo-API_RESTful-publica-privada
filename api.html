@@ -26,7 +26,7 @@
   </style>
 </head>
 <body>
-  <div id="status" class="loading">Requesting render...</div>
+  <div id="status" class="loading">Solicitando render...</div>
 
   <script>
     async function initiateRender() {
@@ -86,7 +86,7 @@
           document.getElementById('status').textContent = 'Render is in progress...';
           setTimeout(() => checkRenderStatus(renderId), 5000);
         } else if (data.status === 'COMPLETED') {
-          document.getElementById('status').textContent = 'Render completed! Redirecting...';
+          document.getElementById('status').textContent = 'Render completado! Redireccionando...';
           document.getElementById('status').classList.remove('loading');
           document.getElementById('status').classList.add('completed');
 
