@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template Rendering UI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #status {
+      font-size: 1.5em;
+      color: #333;
+    }
+    .loading {
+      color: #007bff;
+    }
+    .completed {
+      color: #28a745;
+    }
+  </style>
+</head>
+<body>
+  <div id="status" class="loading">Requesting render...</div>
+
+  <script>
+    async function initiateRender() {
+      const TEMPLATE_ID = '16d095d6-0df0-415c-a797-f0b3a1d2c70c';
+      const API_KEY = 'c2a616ec-f768-4f9b-a087-4697a9a1934e';
+      
+      try {
+        const response = await fetch('https://api.templated.io/v1/render', {
+          method: 'POST',
+          body: JSON.stringify({
+            template: TEMPLATE_ID,
+            layers: {
+              "text-1": {
+                text: "This is my text to be rendered",
+                color: "#FFFFFF",
+                background: "#0000FF"
+              },
+              "image-1": {
+                image_url: "https://pathtomyphoto.com/123.jpg"
+              }
+            }
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${API_KEY}`
+          }
+        });
+        
+        const data = await response.json();
+        const renderId = data.id;
+
+
+        checkRenderStatus(renderId);
+
+      } catch (error) {
+        document.getElementById('status').textContent = 'Error initiating render request';
+        document.getElementById('status').classList.remove('loading');
+        document.getElementById('status').classList.add('error');
+        console.error('Error:', error);
+      }
+    }
+
+    async function checkRenderStatus(renderId) {
+      const API_KEY = 'c2a616ec-f768-4f9b-a087-4697a9a1934e';
+
+      try {
+        const response = await fetch(`https://api.templated.io/v1/render/${renderId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${API_KEY}`
+          }
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'PENDING') {
+          document.getElementById('status').textContent = 'Render is in progress...';
+          setTimeout(() => checkRenderStatus(renderId), 5000);
+        } else if (data.status === 'COMPLETED') {
+          document.getElementById('status').textContent = 'Render completed! Redirecting...';
+          document.getElementById('status').classList.remove('loading');
+          document.getElementById('status').classList.add('completed');
+
+          window.location.href = data.url;
+        }
+
+      } catch (error) {
+        document.getElementById('status').textContent = 'Error checking render status';
+        console.error('Error:', error);
+      }
+    }
+
+    window.onload = initiateRender;
+  </script>
+</body>
+</html>

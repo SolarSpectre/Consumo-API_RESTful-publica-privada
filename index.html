@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilo.css">
+    <title>Registro e Inicio de Sesión</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Formulario de Registro -->
+        <section id="registerForm" class="form-container">
+            <h2>Registro</h2>
+            <form>
+                <label for="registerImage">Subir Imagen para Registro</label>
+                <input type="file" id="registerImage" accept="image/*" required>
+                <button type="submit">Registrar</button>
+            </form>
+            <p id="registerMessage"></p>
+        </section>
+
+        <!-- Formulario de Inicio de Sesión -->
+        <section id="loginForm" class="form-container" style="display: none;">
+            <h2>Iniciar Sesión</h2>
+            <form>
+                <label for="loginImage">Subir Imagen para Iniciar Sesión</label>
+                <input type="file" id="loginImage" accept="image/*" required>
+                <button type="submit">Iniciar sesión</button>
+            </form>
+            <p id="loginMessage"></p>
+        </section>
+
+        <button class="toggle-button" onclick="toggleForms()">Cambiar a Iniciar Sesión/Registro</button>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
